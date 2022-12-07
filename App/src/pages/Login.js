@@ -1,26 +1,37 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import axios from "../helpers/axios";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const creadatiolChange = (e) => {
+  const valueChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
   const { email, password } = formData;
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    console.log("submit is working");
+    const user = { email, password };
+    const response = await axios.post("http://localhost:5000/login", user);
+    if (response.data) {
+      console.log(response.data);
+      console.log("hai ressponse sert", response.data);
 
-    const userData = {
-      email,
-      password,
-    };
-    console.log(userData);
+      localStorage.setItem("user", response.data.token);
+      navigate("/");
+    } else {
+      console.log(response);
+      console.log("invalid user");
+    }
   };
 
   return (
@@ -37,13 +48,13 @@ const Login = () => {
               name="email"
               id="email"
               className="form-control"
-              onChange={creadatiolChange}
+              onChange={valueChange}
               placeholder="Email"
             />
           </div>
           <div className="form-group">
             <input
-              onChange={creadatiolChange}
+              onChange={valueChange}
               value={password}
               type="password"
               name="password"

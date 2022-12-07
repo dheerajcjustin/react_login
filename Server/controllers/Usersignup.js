@@ -13,26 +13,35 @@ const signup = async (req, res) => {
   }
 };
 const login = async (req, res) => {
-  // const user = new User(req.body);
-  // try {
-  //   await user.save();
-  //   res.json({ status: true });
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  res.json({ status: true });
+  console.log("indide the login");
+  const { email, password } = req.body;
+  console.log(email, password);
+  const user = await User.findOne({ email, password });
+  if (user) {
+    console.log(user);
+    const token = await JWT.sign(
+      {
+        email,
+        userId: user._id,
+      },
+      "anjdjajjajjehd3fj333",
+      {
+        expiresIn: 360000,
+      }
+    );
+    console.log("tokenset");
+    res.json({
+      token,
+      email,
+      userId: user._id,
+    });
+  } else {
+    res.json(false);
+    console.log("no user");
+  }
 };
 
-const authCheck = async (req, res) => {
-  // const user = new User(req.body);
-  // try {
-  //   await user.save();
-  //   res.json({ status: true });
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  res.json({ status: true });
-};
+const authCheck = async (req, res) => {};
 
 const imageUpload = async (req, res) => {
   // const user = new User(req.body);

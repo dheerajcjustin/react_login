@@ -44,14 +44,17 @@ const Login = () => {
       return;
     }
     console.log("hai inside the submit ");
-    axios
-      .post("/signup", {
-        userName,
-        email,
-        password,
-      })
+    axios({
+      method: "post",
+      url: "/signup",
+      data: {
+        userName: userName,
+        email: email,
+        password: password,
+      },
+    })
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
       })
       .catch((err) => {
         // alert("Error Occured");

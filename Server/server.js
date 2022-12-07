@@ -13,14 +13,14 @@ const app = express();
 // app.use(passport.initialize());
 // app.use(passport.session());
 // view engine setup
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 app.use("/admin", adminRoutes);
 app.use("/", userRoutes);
 
 //  app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/react_aminlogin")
