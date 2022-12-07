@@ -1,30 +1,61 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../helpers/axios";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     passwordConfirm: "",
-    name: "",
+    userName: "",
   });
-  const creadatiolChange = (e) => {
+  const valueChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
-  const { email, password, passwordConfirm, name } = formData;
 
+  const { email, password, passwordConfirm, userName } = formData;
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("hai inside the submit ");
 
-    const userData = {
+    console.log(
+      "🚀 ~ file: Signup.js:45 ~ onSubmit ~ email, userName, password ",
       email,
-      password,
-      name,
-      passwordConfirm,
-    };
-    console.log(userData);
+      userName,
+      password
+    );
+    if (userName.trim() === "") {
+      console.log("name inside the submit ");
+
+      return;
+    }
+    if (email.trim() === "") {
+      console.log("email inside the submit ");
+
+      return;
+    }
+    if (password !== passwordConfirm) {
+      console.log("password inside the submit ");
+
+      return;
+    }
+    console.log("hai inside the submit ");
+    axios
+      .post("/signup", {
+        userName,
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        // alert("Error Occured");
+      });
   };
 
   return (
@@ -36,12 +67,12 @@ const Login = () => {
         <form action="" onSubmit={onSubmit}>
           <div className="form-group">
             <input
-              value={name}
+              value={userName}
               type="text"
-              name="name"
-              id="name"
+              name="userName"
+              id="userName"
               className="form-control"
-              onChange={creadatiolChange}
+              onChange={valueChange}
               placeholder="Name"
             />
           </div>
@@ -52,13 +83,13 @@ const Login = () => {
               name="email"
               id="email"
               className="form-control"
-              onChange={creadatiolChange}
+              onChange={valueChange}
               placeholder="Email"
             />
           </div>
           <div className="form-group">
             <input
-              onChange={creadatiolChange}
+              onChange={valueChange}
               value={password}
               type="password"
               name="password"
@@ -69,7 +100,7 @@ const Login = () => {
           </div>
           <div className="form-group">
             <input
-              onChange={creadatiolChange}
+              onChange={valueChange}
               value={passwordConfirm}
               type="password"
               name="passwordConfirm"

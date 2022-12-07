@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose"); //mongoose
+const userRoutes = require("./routers/userRoute");
+const adminRoutes = require("./routers/adminRoute");
 
 const port = 5000;
 
@@ -13,6 +15,8 @@ const app = express();
 // view engine setup
 
 app.use(cors());
+app.use("/admin", adminRoutes);
+app.use("/", userRoutes);
 
 //  app.use(morgan('dev'));
 app.use(express.json());
